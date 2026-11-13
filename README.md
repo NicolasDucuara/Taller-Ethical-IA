@@ -99,35 +99,6 @@ Corre el script sin modificar nada. Las métricas SPD y EOD deben aparecer como 
 
 **Evidencia 1: salida en consola (TODOs pendientes):**
 
-```
-Archivo auditado: /home/nicolas/fastAPI/Taller-Ethical-IA/data/model_predictions.csv
-Registros cargados: 24
-
-Accuracy global: 62.5%
-Tasa de aceptación - Grupo mayoritario (0): 75.0%
-Tasa de aceptación - Grupo minoritario (1): 25.0%
-
-Matriz de confusión - Grupo Mayoritario (0):
-   TN=2  FP=3  FN=1  TP=6
-   TPR (Recall) = 85.7%   FPR = 60.0%
-
-Matriz de confusión - Grupo Minoritario (1):
-   TN=4  FP=0  FN=5  TP=3
-   TPR (Recall) = 37.5%   FPR = 0.0%
-
---- Métricas de equidad ---
-Disparate Impact Ratio (DI):          0.333
-Statistical Parity Difference (SPD):  PENDIENTE (TODO 2)
-Equal Opportunity Difference (EOD):   PENDIENTE (TODO 1)
-
-============================================================
-🚨 ALERTA: VIOLACIÓN DE LA REGLA DE LOS CUATRO QUINTOS 🚨
-   DI = 0.333  <  umbral = 0.80
-   El modelo presenta IMPACTO DISPAR contra el grupo minoritario.
-   Acción: devolver a desarrollo para mitigación de sesgos.
-============================================================
-```
-
 ![Evidencia 1: TODOs pendientes](docs/img/evidencia-1-pendientes.png)
 
 ### Paso 2. Implementa los TODO
@@ -141,56 +112,9 @@ Verifica con `pytest -v`: los tests de SPD y EOD deben pasar de _skipped_ a _pas
 
 **Evidencia 2: salida de `pytest -v` con TODOs implementados:**
 
-```
-============================= test session starts ==============================
-platform linux -- Python 3.12.3, pytest-9.2.0, pluggy-1.7.0
-cachedir: .pytest_cache
-rootdir: /home/nicolas/fastAPI/Taller-Ethical-IA
-collecting ... collected 6 items
-
-tests/test_audit.py::test_selection_rates_biased PASSED                  [ 16%]
-tests/test_audit.py::test_disparate_impact_biased PASSED                 [ 33%]
-tests/test_audit.py::test_spd_and_eod_biased PASSED                      [ 50%]
-tests/test_audit.py::test_zero_majority_rate_raises PASSED               [ 66%]
-tests/test_audit.py::test_exit_code_is_1_for_biased_model PASSED         [ 83%]
-tests/test_audit.py::test_exit_code_is_0_for_fair_model PASSED           [100%]
-
-============================== 6 passed in 1.09s ===============================
-```
-
 ![Evidencia 2: pytest -v](docs/img/evidencia-2-pytest.png)
 
 **Evidencia 3: salida en consola sobre el dataset sesgado (TODOs implementados):**
-
-```
-Archivo auditado: /home/nicolas/fastAPI/Taller-Ethical-IA/data/model_predictions.csv
-Registros cargados: 24
-
-Accuracy global: 62.5%
-Tasa de aceptación - Grupo mayoritario (0): 75.0%
-Tasa de aceptación - Grupo minoritario (1): 25.0%
-
-Matriz de confusión - Grupo Mayoritario (0):
-   TN=2  FP=3  FN=1  TP=6
-   TPR (Recall) = 85.7%   FPR = 60.0%
-
-Matriz de confusión - Grupo Minoritario (1):
-   TN=4  FP=0  FN=5  TP=3
-   TPR (Recall) = 37.5%   FPR = 0.0%
-
---- Métricas de equidad ---
-Disparate Impact Ratio (DI):          0.333
-Statistical Parity Difference (SPD):  -0.500
-Equal Opportunity Difference (EOD):   -0.482
-(!) Brecha mayor a 0.10 en SPD y/o EOD: revisar. Estas dos métricas son informativas; la compuerta usa solo el DI.
-
-============================================================
-🚨 ALERTA: VIOLACIÓN DE LA REGLA DE LOS CUATRO QUINTOS 🚨
-   DI = 0.333  <  umbral = 0.80
-   El modelo presenta IMPACTO DISPAR contra el grupo minoritario.
-   Acción: devolver a desarrollo para mitigación de sesgos.
-============================================================
-```
 
 ![Evidencia 3: dataset sesgado con TODOs implementados](docs/img/evidencia-3-sesgado.png)
 
@@ -224,33 +148,6 @@ cp tests/fixtures/fair_predictions.csv data/model_predictions.csv
 ```
 
 **Evidencia 4: salida en consola tras la mitigación:**
-
-```
-Archivo auditado: /home/nicolas/fastAPI/Taller-Ethical-IA/data/model_predictions.csv
-Registros cargados: 24
-
-Accuracy global: 75.0%
-Tasa de aceptación - Grupo mayoritario (0): 75.0%
-Tasa de aceptación - Grupo minoritario (1): 66.7%
-
-Matriz de confusión - Grupo Mayoritario (0):
-   TN=2  FP=3  FN=1  TP=6
-   TPR (Recall) = 85.7%   FPR = 60.0%
-
-Matriz de confusión - Grupo Minoritario (1):
-   TN=3  FP=1  FN=1  TP=7
-   TPR (Recall) = 87.5%   FPR = 25.0%
-
---- Métricas de equidad ---
-Disparate Impact Ratio (DI):          0.889
-Statistical Parity Difference (SPD):  -0.083
-Equal Opportunity Difference (EOD):   +0.018
-
-============================================================
-✅ APROBADO: el modelo cumple la regla de los cuatro quintos.
-   DI = 0.889  >=  umbral = 0.80
-============================================================
-```
 
 ![Evidencia 4: tras la mitigación](docs/img/evidencia-4-mitigacion.png)
 
